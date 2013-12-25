@@ -58,11 +58,11 @@ package "libjpeg-devel" do
 	 action :install
 end
 
-package "libxml" do 
+package "libxml2" do 
 	 action :install
 end
 
-package "libxml-devel" do 
+package "libxml2-devel" do 
 	 action :install
 end
 
@@ -78,15 +78,24 @@ end
 bash "git-clone-nginx" do
 	 user "root"
 	 code <<-EOC
-	mkdir -p ~/src
+	 $nginx=v1.4.4
+	 [ -d ~/src ] || mkdir -p ~/src
 	 git clone https://github.com/nginx/nginx.git ~/src/nginx
-	 cd ~/src/nginx 
-	 git checkout -b v1.4.4 refs/tags/v1.4.4
+
+	 cd ~/src/nginx
+
+	 if git branch -v | grep $nginx; then
+		 echo branch already exists;
+	 else
+		 git checkout -b v1.4.4 refs/tags/$nginx;
+	 fi 	 
+	 [ -e ~/src/nginx/Makefile ] %% echo 'Already installed ngxinx' && exit ;
+	 
 	 ./configure --user=nginx --group=nginx --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_xslt_module --with-http_image_filter_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module
 	
 	 make
 	 make install
-	 ln -s /usr/local/nginx/sbin/nginx /sbin/nginx
+	 [ -h /sbin/nginx ] || ln -s /usr/local/nginx/sbin/nginx /sbin/nginx
 	 EOC
 end
 
