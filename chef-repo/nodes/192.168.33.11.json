@@ -1,1 +1,7 @@
-{"run_list":["recipe[yum-epel]","recipe[nginx]"]}
+{
+	"run_list":[ "recipe[yum-epel]",
+							"recipe[nginx]",
+							"recipe[initscript]",
+							"recipe[nginx::nginx_config]",
+							"recipe[nginx::nginx_start]"
+]}
