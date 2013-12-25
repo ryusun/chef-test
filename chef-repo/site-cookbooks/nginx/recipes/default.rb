@@ -13,6 +13,66 @@ package "git" do
 	 action :install
 end
 
+package "gcc" do 
+	 action :install
+end
+
+package "pcre" do 
+	 action :install
+end
+
+package "pcre-devel" do 
+	 action :install
+end
+
+package "openssl" do 
+	 action :install
+end
+
+package "openssl-devel" do 
+	 action :install
+end
+
+package "gd" do 
+	 action :install
+end
+
+package "gd-devel" do 
+	 action :install
+end
+
+package "libpng" do 
+	 action :install
+end
+
+
+package "libpng-devel" do 
+	 action :install
+end
+
+package "libjpeg" do 
+	 action :install
+end
+
+package "libjpeg-devel" do 
+	 action :install
+end
+
+package "libxml" do 
+	 action :install
+end
+
+package "libxml-devel" do 
+	 action :install
+end
+
+package "libxslt" do 
+	 action :install
+end
+
+package "libxslt-devel" do 
+	 action :install
+end
 
 # git clone nginx 
 bash "git-clone-nginx" do
