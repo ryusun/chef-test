@@ -4,5 +4,6 @@
 							"recipe[nginx]",
 							"recipe[initscript]",
 							"recipe[nginx::nginx_config]",
+							"recipe[releaseport]",
 							"recipe[nginx::nginx_start]"
 ]}
