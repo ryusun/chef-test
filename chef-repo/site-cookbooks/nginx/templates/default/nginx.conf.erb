@@ -1,7 +1,5 @@
-#user  nginx;
-#worker_processes  2;
-#changed yhori
-worker_processes  4;
+user  nginx;
+worker_processes  2;
 worker_cpu_affinity 0101 1010;
 
 #error_log  logs/error.log;
@@ -156,86 +154,88 @@ http {
 
     # HTTPS server
     #
-    server {
-
-        listen       443;
-        server_name  localhost;
-
-        ssl                  on;
-        ssl_certificate      /usr/local/nginx/conf/img03.pem;
-        ssl_certificate_key  /usr/local/nginx/conf/img03.key;
-
-        ssl_session_timeout  5m;
-
-        ssl_protocols  SSLv2 SSLv3 TLSv1;
-        ssl_ciphers  HIGH:!aNULL:!MD5;
-        ssl_prefer_server_ciphers   on;
-
-        location / {
-            root   html;
-            index  index.html index.htm;
-        }
-
-        location ~ /trade/.*\.jpg$ {
-
-            rewrite ^/trade/(img[0-9]*)/(cars)/([0-9]*)/([0-9]*)/japan(.*)/(.*)/([0-9]*.\.jpg)$ /trade/$1/$2/$3/$4/$7;
-            rewrite ^/trade/(img[0-9]*)/(cars|motorcycles)/([0-9]*)/([0-9]*)/(.*)/([0-9]*.\.jpg)$ /trade/$1/$2/$3/$4/$6;
-
-            if ($query_string ~ .*dummy=.*) {
-                break;
-            }
-
-            if ($query_string ~ .*=.*) {
-              rewrite ^/trade/(.*\.jpg)$ /image_filter/$1 last;
-            }
-        }
-
-        location ~ ^/image_filter/(.*\.jpg)$ {
-            internal;
-
-            set $file $1;
-            set $width 150;
-            set $height 150;
-            set $quality 75;
-
-            if ($arg_width ~ (\d*)) {
-                set $width $1;
-            }
-            if ($arg_height ~ (\d*)) {
-                set $height $1;
-            }
-            if ($arg_quality ~ (100|[1-9][0-9]|[1-9])) {
-                set $quality $1;
-            }
-
-            if ($arg_type = "resize") {
-                rewrite ^ /resize last;
-            }
-
-            rewrite ^ /crop last;
-        }
-
-        location /resize {
-            internal;
-            rewrite ^ /trade/$file break;
-            image_filter  resize  $width $height;
-            image_filter_jpeg_quality $quality;
-            error_page 415 = @empty;
-        }
-
-        location /crop {
-            internal;
-            rewrite ^ /trade/$file break;
-            image_filter  crop  $width $height;
-            image_filter_jpeg_quality $quality;
-            error_page 415 = @empty;
-        }
-
-        location @empty {
-            empty_gif;
-        }
-
-    }
-
+#    server {
+#
+#        listen       443;
+#        server_name  localhost;
+#
+#        ssl                  on;
+#				# change this files for live env. 
+#        #ssl_certificate      /usr/local/nginx/conf/img03.pem;
+#        #ssl_certificate      /usr/local/nginx/conf/img03.pem;
+#        ssl_certificate_key  /usr/local/nginx/conf/cert.pem
+#        ssl_certificate_key  /usr/local/nginx/conf/csr.pem
+#
+#        ssl_session_timeout  5m;
+#
+#        ssl_protocols  SSLv2 SSLv3 TLSv1;
+#        ssl_ciphers  HIGH:!aNULL:!MD5;
+#        ssl_prefer_server_ciphers   on;
+#
+#        location / {
+#            root   html;
+#            index  index.html index.htm;
+#        }
+#
+#        location ~ /trade/.*\.jpg$ {
+#
+#            rewrite ^/trade/(img[0-9]*)/(cars)/([0-9]*)/([0-9]*)/japan(.*)/(.*)/([0-9]*.\.jpg)$ /trade/$1/$2/$3/$4/$7;
+#            rewrite ^/trade/(img[0-9]*)/(cars|motorcycles)/([0-9]*)/([0-9]*)/(.*)/([0-9]*.\.jpg)$ /trade/$1/$2/$3/$4/$6;
+#
+#            if ($query_string ~ .*dummy=.*) {
+#                break;
+#            }
+#
+#            if ($query_string ~ .*=.*) {
+#              rewrite ^/trade/(.*\.jpg)$ /image_filter/$1 last;
+#            }
+#        }
+#
+#        location ~ ^/image_filter/(.*\.jpg)$ {
+#            internal;
+#
+#            set $file $1;
+#            set $width 150;
+#            set $height 150;
+#            set $quality 75;
+#
+#            if ($arg_width ~ (\d*)) {
+#                set $width $1;
+#            }
+#            if ($arg_height ~ (\d*)) {
+#                set $height $1;
+#            }
+#            if ($arg_quality ~ (100|[1-9][0-9]|[1-9])) {
+#                set $quality $1;
+#            }
+#
+#            if ($arg_type = "resize") {
+#                rewrite ^ /resize last;
+#            }
+#
+#            rewrite ^ /crop last;
+#        }
+#
+#        location /resize {
+#            internal;
+#            rewrite ^ /trade/$file break;
+#            image_filter  resize  $width $height;
+#            image_filter_jpeg_quality $quality;
+#            error_page 415 = @empty;
+#        }
+#
+#        location /crop {
+#            internal;
+#            rewrite ^ /trade/$file break;
+#            image_filter  crop  $width $height;
+#            image_filter_jpeg_quality $quality;
+#            error_page 415 = @empty;
+#        }
+#
+#        location @empty {
+#            empty_gif;
+#        }
+#
+#    }
+#
 }
-
