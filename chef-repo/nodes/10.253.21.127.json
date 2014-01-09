@@ -1,0 +1,8 @@
+{"run_list":[ "recipe[yum-epel]",
+							"recipe[operateuser]",
+							"recipe[nginx]",
+							"recipe[initscript]",
+							"recipe[nginx::nginx_config]",
+							"recipe[releaseport]",
+							"recipe[nginx::nginx_start]"
+]}
