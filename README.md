@@ -61,5 +61,11 @@ knife solo cook <target hostname or IP ex) root@192.168.11.31>
 
 ```
 
+### notifications.
 
+* chef-test/chef-repo/site-cookbooks/nginx/templates/default/nginx.conf
+サンプルなので下記のファイルを適切な設定に変更してください.  
 
+* chef-test/chef-repo/site-cookbooks/nginx/files/default/*
+サンプルの証明書です。/usr/local/nginx/confに配置されます。適切なものと交換してください。  
+  
