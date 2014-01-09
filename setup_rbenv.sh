@@ -32,7 +32,7 @@ if [ ! -d rbenv -a ! -d ruby-build ]; then
 	 ./install.sh
 fi
 
-if [ -f /etc/profile.d/rbenv.sh ]; then;
+if [ ! -f /etc/profile.d/rbenv.sh ]; then
 	 echo 'export RBENV_ROOT="/usr/local/rbenv"'     >> /etc/profile.d/rbenv.sh
 	 echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> /etc/profile.d/rbenv.sh
 	 echo 'eval "$(rbenv init -)"'                   >> /etc/profile.d/rbenv.sh
