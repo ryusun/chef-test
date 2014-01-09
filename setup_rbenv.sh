@@ -20,20 +20,25 @@ sudo yum -y install curl curl-devel gcc gcc-c++ git openssl-devel httpd-devel re
 sudo yum --enablerepo=epel -y install libyaml-devel
 
 cd /usr/local
-git clone git://github.com/sstephenson/rbenv.git rbenv
-mkdir rbenv/shims rbenv/versions
-chgrp -R $MY_GROUP rbenv
-chmod -R g+rwxX rbenv
 
-git clone git://github.com/sstephenson/ruby-build.git ruby-build
-cd ruby-build
-./install.sh
+if [ ! -d rbenv -a ! -d ruby-build ]; then
+	 git clone git://github.com/sstephenson/rbenv.git rbenv
+	 mkdir rbenv/shims rbenv/versions
+	 chgrp -R $MY_GROUP rbenv
+	 chmod -R g+rwxX rbenv
+
+	 git clone git://github.com/sstephenson/ruby-build.git ruby-build
+	 cd ruby-build
+	 ./install.sh
+fi
 
 if [ -f /etc/profile.d/rbenv.sh ]; then;
 	 echo 'export RBENV_ROOT="/usr/local/rbenv"'     >> /etc/profile.d/rbenv.sh
 	 echo 'export PATH="/usr/local/rbenv/bin:$PATH"' >> /etc/profile.d/rbenv.sh
 	 echo 'eval "$(rbenv init -)"'                   >> /etc/profile.d/rbenv.sh
 fi
+
+source /etc/profile.d/rbenv.sh
 
 exit
 
